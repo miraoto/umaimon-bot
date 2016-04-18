@@ -1,5 +1,3 @@
-# Mostly taken from http://qiita.com/masuidrive/items/1042d93740a7a72242a3
-
 require 'sinatra/base'
 require 'json'
 require 'rest-client'
@@ -27,7 +25,6 @@ class App < Sinatra::Base
         'X-Line-Trusted-User-With-ACL' => ENV["LINE_CHANNEL_MID"],
       })
     end
-
     "OK"
   end
 end
