@@ -14,6 +14,8 @@ class App < Sinatra::Base
         content: msg['content']
       }
 
+      p request_content
+
       endpoint_uri = 'https://trialbot-api.line.me/v1/events'
       content_json = request_content.to_json
 
