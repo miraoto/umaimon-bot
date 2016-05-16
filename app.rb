@@ -7,7 +7,7 @@ class App < Sinatra::Base
     params = JSON.parse(request.body.read)
 
     params['result'].each do |msg|
-      msg['content']['text'] = "#{msg['content']['text']}だらっきょ"
+      msg['content']['text'] = Translate.dash(msg['content']['text'])
       request_content = {
         to: [msg['content']['from']],
         toChannel: 1383378250, # Fixed  value
@@ -29,5 +29,11 @@ class App < Sinatra::Base
       })
     end
     "OK"
+  end
+end
+
+class Translate
+  def self.dash(text)
+    "#{text}っていいました？"
   end
 end
