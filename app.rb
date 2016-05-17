@@ -47,7 +47,7 @@ class Translate
       chiebukuro_api_url = 'http://chiebukuro.yahooapis.jp/Chiebukuro/V1/questionSearch'
       response = RestClient
                   .get(chiebukuro_api_url, { params: { appid: ENV['YAHOO_APP_ID'], query: text, results: 1 } })
-      doc = REXML::Document.new(open(response))
+      doc = REXML::Document.new(response)
       p doc.elements['Result/Question[0]/Content'].text
                   #.to_json['Result']['Question'][0]['Content']
     rescue => e
