@@ -46,7 +46,7 @@ class Translate
       chiebukuro_api_url = 'http://chiebukuro.yahooapis.jp/Chiebukuro/V1/questionSearch'
       response = RestClient
                   .get(chiebukuro_api_url, { params: { appid: ENV['YAHOO_APP_ID'], query: text } })
-      p response.to_json
+      p response.to_xml['Result']
                   #.to_json['Result']['Question'][0]['Content']
     rescue => e
       response = 'うまく認識できなかったよー'
