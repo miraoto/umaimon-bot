@@ -54,14 +54,4 @@ class Translate
     end
     response
   end
-
-  # Ref https://github.com/rails/rails/blob/0e50b7bdf4c0f789db37e22dc45c52b082f674b4/actionview/lib/action_view/helpers/text_helper.rb#L92
-  def self.truncate(text, options = {}, &block)
-    if text
-      length  = options.fetch(:length, 30)
-      content = text.truncate(length, options)
-      content << capture(&block) if block_given? && text.length > length
-      content
-    end
-  end
 end
