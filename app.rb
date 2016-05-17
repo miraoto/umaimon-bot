@@ -47,12 +47,21 @@ class Translate
       chiebukuro_api_url = 'http://chiebukuro.yahooapis.jp/Chiebukuro/V1/questionSearch'
       response = RestClient.get(chiebukuro_api_url, { params: { appid: ENV['YAHOO_APP_ID'], query: text, results: 1, condition: 'solved' } })
       doc = REXML::Document.new(response)
-      response = doc.elements['ResultSet/Result/Question/BestAnswer'].text.truncate(30) +
-                 doc.elements['ResultSet/Result/Question/Url'].text
+      response = "#{doc.elements['ResultSet/Result/Question/BestAnswer'].text.slice(1, 30)}...#{doc.elements['ResultSet/Result/Question/Url'].text}"
     rescue => e
       response = 'うまく認識できなかったよー'
       p e
     end
     response
+  end
+
+  # Ref https://github.com/rails/rails/blob/0e50b7bdf4c0f789db37e22dc45c52b082f674b4/actionview/lib/action_view/helpers/text_helper.rb#L92
+  def self.truncate(text, options = {}, &block)
+    if text
+      length  = options.fetch(:length, 30)
+      content = text.truncate(length, options)
+      content << capture(&block) if block_given? && text.length > length
+      content
+    end
   end
 end
