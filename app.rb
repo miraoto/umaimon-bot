@@ -1,6 +1,7 @@
 require 'sinatra/base'
 require 'json'
 require 'rest-client'
+require 'rexml/document'
 
 class App < Sinatra::Base
   post '/linebot/callback' do
@@ -46,7 +47,8 @@ class Translate
       chiebukuro_api_url = 'http://chiebukuro.yahooapis.jp/Chiebukuro/V1/questionSearch'
       response = RestClient
                   .get(chiebukuro_api_url, { params: { appid: ENV['YAHOO_APP_ID'], query: text } })
-      p response.to_xml['Result']
+      doc = REXML::Document.new(open(response))
+      p doc.elements['Result/Question'].text
                   #.to_json['Result']['Question'][0]['Content']
     rescue => e
       response = 'うまく認識できなかったよー'
