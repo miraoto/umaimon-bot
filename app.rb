@@ -45,11 +45,9 @@ class Translate
   def self.faq(text)
     begin
       chiebukuro_api_url = 'http://chiebukuro.yahooapis.jp/Chiebukuro/V1/questionSearch'
-      response = RestClient
-                  .get(chiebukuro_api_url, { params: { appid: ENV['YAHOO_APP_ID'], query: text, results: 1, type: 'phrase' } })
+      response = RestClient.get(chiebukuro_api_url, { params: { appid: ENV['YAHOO_APP_ID'], query: text, results: 1, type: 'phrase' } })
       doc = REXML::Document.new(response)
-      p doc.elements['ResultSet/Result/Question/Content'].text
-      # p doc.elements['ResultSet/Result/Question[0]/Content'].text
+      p doc.elements['ResultSet/Result/Question/Content']
                   #.to_json['Result']['Question'][0]['Content']
     rescue => e
       response = 'うまく認識できなかったよー'
