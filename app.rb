@@ -48,7 +48,8 @@ class Translate
       response = RestClient
                   .get(chiebukuro_api_url, { params: { appid: ENV['YAHOO_APP_ID'], query: text, results: 1 } })
       doc = REXML::Document.new(response)
-      p doc.elements['ResultSet/Result/Question[0]/Content'].text
+      p doc.elements['ResultSet/Result/Question']
+      # p doc.elements['ResultSet/Result/Question[0]/Content'].text
                   #.to_json['Result']['Question'][0]['Content']
     rescue => e
       response = 'うまく認識できなかったよー'
