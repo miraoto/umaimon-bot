@@ -46,7 +46,7 @@ class Translate
     begin
       chiebukuro_api_url = 'http://chiebukuro.yahooapis.jp/Chiebukuro/V1/questionSearch'
       response = RestClient
-                  .get(chiebukuro_api_url, { params: { appid: ENV['YAHOO_APP_ID'], query: text, results: 1 } })
+                  .get(chiebukuro_api_url, { params: { appid: ENV['YAHOO_APP_ID'], query: text, results: 1, type: 'phrase' } })
       doc = REXML::Document.new(response)
       p doc.elements['ResultSet/Result/Question/Content']
       # p doc.elements['ResultSet/Result/Question[0]/Content'].text
