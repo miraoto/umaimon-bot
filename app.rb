@@ -34,6 +34,19 @@ end
 
 class Translate
   def self.dash(text)
-    "#{text}っていいました？"
+    if text =~ /教えて$/
+      Translate.faq(text) 
+    else
+      "#{text}っていいました？"
+    end
+  end
+
+  def self.faq(text)
+    begin
+      response = RestClient.get("http://chiebukuro.yahooapis.jp/Chiebukuro/V1/questionSearch?appid=#{ENV['YAHOO_APP_ID']}&query=#{text}").to_json['Result']['Question'][0]['Content']
+    rescue
+      response = 'うまく認識できなかったよー'
+    end
+    response
   end
 end
