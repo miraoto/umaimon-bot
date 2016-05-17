@@ -44,8 +44,9 @@ class Translate
   def self.faq(text)
     begin
       response = RestClient.get("http://chiebukuro.yahooapis.jp/Chiebukuro/V1/questionSearch?appid=#{ENV['YAHOO_APP_ID']}&query=#{text}").to_json['Result']['Question'][0]['Content']
-    rescue
+    rescue => e
       response = 'うまく認識できなかったよー'
+      p e
     end
     response
   end
