@@ -24,7 +24,8 @@ class Bot
   def self.talk(text)
     begin
       talk_api_url = "https://api.apigw.smt.docomo.ne.jp/dialogue/v1/dialogue?APIKEY=#{ENV['DOCOMO_APP_KEY']}"
-      response = RestClient.post(talk_api_url, { params: {utt: text}} )
+      p talk_api_url
+      response = RestClient.post(talk_api_url, { utt: text } )
       p response
     rescue => e
       response = 'うまく認識できなかったよー'
