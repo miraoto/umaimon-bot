@@ -2,7 +2,7 @@ require 'sinatra/base'
 require 'json'
 require 'rest-client'
 require 'rexml/document'
-require 'lib/bot'
+require './lib/bot'
 
 class App < Sinatra::Base
   post '/linebot/callback' do
