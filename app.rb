@@ -16,8 +16,6 @@ class App < Sinatra::Base
         content: msg['content']
       }
 
-      p request_content
-
       endpoint_uri = 'https://trialbot-api.line.me/v1/events'
       content_json = request_content.to_json
 
@@ -34,13 +32,11 @@ class App < Sinatra::Base
 
   post '/facebookbot/callback' do
     params = JSON.parse(request.body.read)
-    message = params["entry"][0]["messaging"][0]    
+    msg = params["entry"][0]["messaging"][0]    
 
-    p params
-    p message
-    if message.include?("message")
-      sender = message["sender"]["id"]
-      text = message["message"]["text"]
+    if msg.include?("message")
+      sender = msg["sender"]["id"]
+      text = Translate.dash(msg["message"]["text"])
       endpoint_uri = "https://graph.facebook.com/v2.6/me/messages?access_token=#{ENV["FACEBOOK_TOKEN"]}"
       request_content = {
         recipient: { id:sender },
