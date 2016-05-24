@@ -35,6 +35,7 @@ class App < Sinatra::Base
   post '/facebookbot/callback' do
     token = ENV["FACEBOOK_TOKEN"]
 
+    p params
     message = params["entry"][0]["messaging"][0]    
 
     if message.include?("message")
