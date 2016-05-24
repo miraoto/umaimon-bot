@@ -33,11 +33,10 @@ class App < Sinatra::Base
   end
 
   get '/facebookbot/callback' do
-     if params["hub.verify_token"] == ENV['FACEBOOK_VERIFY_TOKEN']
-       p params
-       render json: params["hub.challenge"]
+     if params['hub.verify_token'] == ENV['FACEBOOK_VERIFY_TOKEN']
+       params['hub.challenge'].to_json
      else
-        render json: "invalid"
+       {status: 'invalid verify token'}
      end
   end
 end
