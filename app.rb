@@ -33,18 +33,19 @@ class App < Sinatra::Base
   end
 
   post '/facebookbot/callback' do
-    token = ENV["FACEBOOK_TOKEN"]
-
-    p request.body.read
+    params = JSON.parse(request.body.read)
     message = params["entry"][0]["messaging"][0]    
 
+    p params
+    p message
     if message.include?("message")
       sender = message["sender"]["id"]
       text = message["message"]["text"]
-      endpoint_uri = "https://graph.facebook.com/v2.6/me/messages?access_token=" + token
-      request_content = {recipient: {id:sender},
-                         message: {text: text}
-                        }
+      endpoint_uri = "https://graph.facebook.com/v2.6/me/messages?access_token=#{ENV["FACEBOOK_TOKEN"]}"
+      request_content = {
+        recipient: { id:sender },
+        message: { text: text }
+      }
       content_json = request_content.to_json
 
       RestClient.post(endpoint_uri, content_json, {
