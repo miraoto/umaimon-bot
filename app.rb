@@ -2,13 +2,14 @@ require 'sinatra/base'
 require 'json'
 require 'rest-client'
 require 'rexml/document'
+require 'lib/bot'
 
 class App < Sinatra::Base
   post '/linebot/callback' do
     params = JSON.parse(request.body.read)
 
     params['result'].each do |msg|
-      msg['content']['text'] = Translate.dash(msg['content']['text'])
+      msg['content']['text'] = Bot.parse(msg['content']['text'])
       request_content = {
         to: [msg['content']['from']],
         toChannel: 1383378250, # Fixed  value
@@ -36,7 +37,7 @@ class App < Sinatra::Base
 
     if msg.include?("message")
       sender = msg["sender"]["id"]
-      text = Translate.dash(msg["message"]["text"])
+      text = Bot.parse(msg["message"]["text"])
       endpoint_uri = "https://graph.facebook.com/v2.6/me/messages?access_token=#{ENV["FACEBOOK_TOKEN"]}"
       request_content = {
         recipient: { id:sender },
@@ -46,34 +47,7 @@ class App < Sinatra::Base
 
       RestClient.post(endpoint_uri, content_json, {
         'Content-Type' => 'application/json; charset=UTF-8'
-      }){ |response, request, result, &block|
-        p response
-        p request
-        p result
-      }
+      })
     end
-  end
-end
-
-class Translate
-  def self.dash(text)
-    if text =~ /教えて$/
-      Translate.faq(text) 
-    else
-      "#{text}っていいました？"
-    end
-  end
-
-  def self.faq(text)
-    begin
-      chiebukuro_api_url = 'http://chiebukuro.yahooapis.jp/Chiebukuro/V1/questionSearch'
-      response = RestClient.get(chiebukuro_api_url, { params: { appid: ENV['YAHOO_APP_ID'], query: text, results: 1, condition: 'solved' } })
-      doc = REXML::Document.new(response)
-      response = "#{doc.elements['ResultSet/Result/Question/BestAnswer'].text.slice(0, 30)}...#{doc.elements['ResultSet/Result/Question/Url'].text}"
-    rescue => e
-      response = 'うまく認識できなかったよー'
-      p e
-    end
-    response
   end
 end
