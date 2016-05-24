@@ -1,7 +1,7 @@
 class Bot
   def self.parse(text)
     if text =~ /教えて$/
-      Translate.faq(text) 
+      faq(text) 
     else
       "#{text}っていいました？"
     end
