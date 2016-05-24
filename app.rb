@@ -37,8 +37,7 @@ class App < Sinatra::Base
        p params
        params['hub.challenge']
      else
-       p 'error'
-       { status: 'invalid verify token' }
+       'invalid verify token'
      end
   end
 end
