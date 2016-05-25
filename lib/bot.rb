@@ -8,7 +8,6 @@ class Bot
     else
       reply = talk(text)
     end
-    @redis.set('content', reply)
     reply
   end
 
@@ -45,7 +44,9 @@ class Bot
       response = RestClient.post(talk_api_url, request_content, {
         'Content-Type' => 'application/json; charset=UTF-8',
       })
-      reply = JSON.parse(response)['utt']
+      response = JSON.parse(response)
+      @redis.set('content', response['context'])
+      reply = response['utt']
     rescue => e
       p e
       reply = "#{text}っていいました？"
