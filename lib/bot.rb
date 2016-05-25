@@ -27,6 +27,7 @@ class Bot
       doc = REXML::Document.new(response)
       reply = "#{doc.elements['ResultSet/Result/Question/BestAnswer'].text.slice(0, 30)}...#{doc.elements['ResultSet/Result/Question/Url'].text}"
     rescue => e
+      p e
       reply = '質問内容をもう一度教えてもらえますか？'
     end
     reply
@@ -46,6 +47,7 @@ class Bot
       })
       reply = JSON.parse(response)['utt']
     rescue => e
+      p e
       reply = "#{text}っていいました？"
     end
     reply
