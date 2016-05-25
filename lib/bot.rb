@@ -1,10 +1,12 @@
 class Bot
   def self.parse(text)
+    redis = Redis.new(url: ENV["REDIS_URL"])
     if text =~ /教えて$/
-      faq(text) 
+      reply = faq(text) 
     else
-      talk(text)
+      reply = talk(text)
     end
+    redis.set('content', reply)
   end
 
   def self.faq(text)
@@ -29,9 +31,12 @@ class Bot
 
   def self.talk(text)
     begin
+      context = redis.get('content')
       request_content = {
-        utt: text
+        utt: text,
+        context: context
       }.to_json
+      p request_content
       talk_api_url = "https://api.apigw.smt.docomo.ne.jp/dialogue/v1/dialogue?APIKEY=#{ENV['DOCOMO_APP_KEY']}"
       response = RestClient.post(talk_api_url, request_content, {
         'Content-Type' => 'application/json; charset=UTF-8',
