@@ -23,13 +23,17 @@ class Bot
 
   def self.talk(text)
     begin
+      request_content = {
+        utt: text
+      }.to_json
       talk_api_url = "https://api.apigw.smt.docomo.ne.jp/dialogue/v1/dialogue?APIKEY=#{ENV['DOCOMO_APP_KEY']}"
-      response = RestClient.post(talk_api_url, { params: {utt: text}} )
+      response = RestClient.post(talk_api_url, request_content, {
+        'Content-Type' => 'application/json; charset=UTF-8',
+      })
       p response
     rescue => e
       response = 'うまく認識できなかったよー'
-      p e
-      p 
+      p "error:#{e}"
     end
     response
   end
