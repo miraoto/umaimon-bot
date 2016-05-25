@@ -33,9 +33,10 @@ class Bot
         utt: text
       }.to_json
       talk_api_url = "https://api.apigw.smt.docomo.ne.jp/dialogue/v1/dialogue?APIKEY=#{ENV['DOCOMO_APP_KEY']}"
-      reply = RestClient.post(talk_api_url, request_content, {
+      response = RestClient.post(talk_api_url, request_content, {
         'Content-Type' => 'application/json; charset=UTF-8',
-      })['utt']
+      })
+      reply = JSON.parse(response)
     rescue => e
       reply = "#{text}っていいました？"
     end
