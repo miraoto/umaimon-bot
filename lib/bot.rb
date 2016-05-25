@@ -1,3 +1,5 @@
+require 'redis'
+
 class Bot
   def self.parse(text)
     redis = Redis.new(url: ENV["REDIS_URL"])
