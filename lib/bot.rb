@@ -36,7 +36,7 @@ class Bot
       response = RestClient.post(talk_api_url, request_content, {
         'Content-Type' => 'application/json; charset=UTF-8',
       })
-      reply = JSON.parse(response)
+      reply = JSON.parse(response)['utt']
     rescue => e
       reply = "#{text}っていいました？"
     end
