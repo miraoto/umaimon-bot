@@ -2,13 +2,13 @@ require 'redis'
 
 class Bot
   def self.parse(text)
-    redis = Redis.new(url: ENV["REDIS_URL"])
+    @redis = Redis.new(url: ENV["REDIS_URL"])
     if text =~ /教えて$/
       reply = faq(text) 
     else
       reply = talk(text)
     end
-    redis.set('content', reply)
+    @redis.set('content', reply)
     reply
   end
 
@@ -35,7 +35,7 @@ class Bot
 
   def self.talk(text)
     begin
-      context = redis.get('content')
+      context = @redis.get('content')
       request_content = {
         utt: text,
         context: context
