@@ -9,6 +9,7 @@ class Bot
       reply = talk(text)
     end
     redis.set('content', reply)
+    reply
   end
 
   def self.faq(text)
