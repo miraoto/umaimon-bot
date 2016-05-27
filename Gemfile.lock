@@ -23,6 +23,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.2)
+    wit (3.4.0)
 
 PLATFORMS
   ruby
@@ -31,6 +32,7 @@ DEPENDENCIES
   redis
   rest-client
   sinatra
+  wit
 
 BUNDLED WITH
    1.11.2

@@ -1,4 +1,5 @@
 require 'redis'
+require 'wit'
 
 class Bot
   def self.parse(text)
@@ -9,6 +10,24 @@ class Bot
       reply = talk(text)
     end
     reply
+  end
+
+  def self.standard_assistant(text)
+    actions = {
+      :say => -> (session_id, context, msg) {
+        p msg
+      },
+      :merge => -> (session_id, context, entities, msg) {
+        return context
+      },
+      :error => -> (session_id, context, error) {
+        p error.message
+      },
+    }
+    Wit.logger.level = Logger::WARN
+    client = Wit.new(ENV['WIT_AI_ACCESS_TOKEN'], actions)
+    response = client.message(text)
+    p "Response: #{response}"
   end
 
   def self.faq(text)
