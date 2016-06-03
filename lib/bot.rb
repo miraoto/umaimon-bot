@@ -24,7 +24,7 @@ class Bot
         p error.message
       },
     }
-    Wit.logger.level = Logger::WARN
+    Wit.logger.level = Logger::DEBUG
     client = Wit.new(ENV['WIT_AI_ACCESS_TOKEN'], actions)
     response = client.message(text)
     p "Response: #{response}"
